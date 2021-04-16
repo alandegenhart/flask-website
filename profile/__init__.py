@@ -49,4 +49,7 @@ def create_app(test_config=None):
     import profile.auth
     app.register_blueprint(profile.auth.bp)
 
+    import profile.blog
+    app.register_blueprint(profile.blog.bp)
+
     return app

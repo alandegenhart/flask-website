@@ -67,7 +67,7 @@ def login():
             # one for the current user, and redirect to the home page
             flask.session.clear()
             flask.session['user_id'] = user['id']
-            return flask.redirect(flask.url_for('/'))
+            return flask.redirect(flask.url_for('home'))
 
         flask.flash(error)
 
@@ -82,15 +82,15 @@ def load_logged_in_user():
         flask.g.user = None
     else:
         # If a user is successfully logged in, get their info
-        query = 'SELECT * FROM user WHERE id = ?', (user_id,)
-        flask.g.user = profile.db.get_db().execute(query).fetchone()
+        query = 'SELECT * FROM user WHERE id = ?'
+        flask.g.user = profile.db.get_db().execute(query, (user_id,)).fetchone()
 
 
 @bp.route('/logout')
 def logout():
     """Log out the current user"""
     flask.session.clear()
-    return flask.redirect(flask.url_for('index'))
+    return flask.redirect(flask.url_for('home'))
 
 
 def login_required(view):
