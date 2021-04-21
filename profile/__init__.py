@@ -1,5 +1,6 @@
 import flask
 import os
+import profile.db
 
 
 def create_app(test_config=None):
@@ -24,7 +25,8 @@ def create_app(test_config=None):
     # Create routes
     @app.route('/')
     def home():
-        return flask.render_template('welcome.html')
+        posts = profile.db.get_posts()
+        return flask.render_template('welcome.html', posts=posts)
 
     @app.route('/projects')
     def projects():

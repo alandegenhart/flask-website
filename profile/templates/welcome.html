@@ -12,6 +12,21 @@
 		<li><a href="{{ url_for('about')}}" class="link-primary">About</a>: About me.</li>
 	</ul>
 
-	<p>For coding examples, please check out my <a href="https://github.com/alandegenhart">GitHub profile</a>.</p>
+	<p>For coding examples, please check out my <a href="https://github.com/alandegenhart" class="link-primary">GitHub profile</a>.</p>
+
+    <h2>Recent updates</h2>
+    {% for post in posts %}
+        <article class="post">
+            <header>
+                <div>
+                    <h1>{{ post['title'] }}</h1>
+                    <div class="about mb-1">
+                        {{ post['created'].strftime('%Y-%m-%d') }}
+                    </div>
+                </div>
+            </header>
+            <p class="body">{{ post['body'] }}</p>
+        </article>
+    {% endfor %}
 
 {% endblock %}

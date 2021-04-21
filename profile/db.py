@@ -39,3 +39,20 @@ def init_db_command():
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
+
+
+def get_posts():
+    """Get (all) posts.
+    Here we get the database reference, execute the query to get post info, and
+    return.
+
+    Eventually this can be extended to limit the number of posts.
+    """
+    db = get_db()
+    query = (
+            'SELECT p.id, title, body, created, author_id, username' +
+            ' FROM post p JOIN user ON author_id' +
+            ' ORDER BY created DESC'
+    )
+    posts = db.execute(query).fetchall()
+    return posts

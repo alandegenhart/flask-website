@@ -21,3 +21,42 @@ h4 {
 .bg-navbar {
 	background-color: #21324a
 }
+
+.link-primary {
+	color: #00548c;
+	text-decoration: none;
+}
+.link-primary:hover {
+	color: #466c85;
+}
+
+.social a {
+	color: #798488;
+	text-decoration: none;
+}
+.social a:hover {
+	color: #a2a4a5;
+}
+
+.post > header {
+  display: flex;
+  align-items: flex-end;
+  font-size: 0.85em;
+}
+
+.post > header > div:first-of-type {
+  flex: auto;
+}
+
+.post > header h1 {
+  font-size: 1.5em;
+  margin-bottom: 0;
+}
+
+.post .about {
+  color: slategray;
+}
+
+.post .body {
+  white-space: pre-line;
+}
