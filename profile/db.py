@@ -1,6 +1,7 @@
 import sqlite3
 import click
 import flask
+import markupsafe
 
 
 def get_db():
@@ -41,18 +42,30 @@ def init_app(app):
     app.cli.add_command(init_db_command)
 
 
-def get_posts():
+def get_posts(limit=10000):
     """Get (all) posts.
     Here we get the database reference, execute the query to get post info, and
     return.
 
-    Eventually this can be extended to limit the number of posts.
+    NOTE -- SQL doesn't appear to provide a way to set the limit to get all
+    rows, so the max limit is set to 100k (there should never be this many
+    posts)
     """
+    # Query database for posts
     db = get_db()
     query = (
             'SELECT p.id, title, body, created, author_id, username' +
             ' FROM post p JOIN user ON author_id' +
-            ' ORDER BY created DESC'
+            ' ORDER BY created DESC LIMIT ?'
     )
-    posts = db.execute(query).fetchall()
-    return posts
+    posts = db.execute(query, (limit,)).fetchall()
+
+    # Escape HTML for each post -- convert from a sqlite3 object to a dict b/c
+    # row objects do not support assignment and we want to escape the HTML
+    post_list = []
+    for post in posts:
+        post = dict(post)
+        post['body'] = markupsafe.Markup(post['body'])
+        post_list.append(post)
+
+    return post_list

@@ -39,22 +39,23 @@ h4 {
 }
 
 .post > header {
-  display: flex;
-  align-items: flex-end;
-  font-size: 0.85em;
+	display: flex;
+	align-items: flex-end;
+	font-size: 0.85em;
 }
 
 .post > header > div:first-of-type {
-  flex: auto;
+	flex: auto;
 }
 
 .post > header h1 {
-  font-size: 1.5em;
-  margin-bottom: 0;
+  	font-size: 1.5em;
+  	margin-bottom: 0;
 }
 
 .post .about {
-  color: slategray;
+  	color: slategray;
+	font-size: 1rem;
 }
 
 .post .body {

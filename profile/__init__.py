@@ -25,7 +25,7 @@ def create_app(test_config=None):
     # Create routes
     @app.route('/')
     def home():
-        posts = profile.db.get_posts()
+        posts = profile.db.get_posts(limit=2)
         return flask.render_template('welcome.html', posts=posts)
 
     @app.route('/projects')
@@ -39,6 +39,11 @@ def create_app(test_config=None):
     @app.route('/publications')
     def publications():
         return flask.render_template('publications.html')
+
+    @app.route('/posts')
+    def posts():
+        posts = profile.db.get_posts()
+        return flask.render_template('posts.html', posts=posts)
 
     @app.route('/about')
     def about():
