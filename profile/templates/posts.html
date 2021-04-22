@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+	<h1>Posts</h1>
+
+    {% for post in posts %}
+        <article class="post pt-4">
+            <header>
+                <div>
+                    <h1>{{ post['title'] }}</h1>
+                    <div class="about mb-1">
+                        {{ post['created'].strftime('%Y-%m-%d') }}
+                    </div>
+                </div>
+            </header>
+            <p class="body">{{ post['body'] }}</p>
+        </article>
+    {% endfor %}
+
+{% endblock %}
