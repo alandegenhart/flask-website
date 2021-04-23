@@ -1,6 +1,6 @@
 import flask
 import werkzeug.exceptions
-import profile.auth
+import profile.admin
 import profile.db
 
 
@@ -21,7 +21,7 @@ def index():
 
 
 @bp.route('/create', methods=('GET', 'POST'))
-@profile.auth.login_required
+@profile.admin.login_required
 def create():
     """View to create a post."""
     if flask.request.method == 'POST':
@@ -65,7 +65,7 @@ def get_post(post_id, check_author=True):
 
 
 @bp.route('/<int:post_id>/update', methods=('GET', 'POST'))
-@profile.auth.login_required
+@profile.admin.login_required
 def update(post_id):
     """Update a post."""
     post = get_post(post_id)
@@ -93,7 +93,7 @@ def update(post_id):
 
 
 @bp.route('/<int:post_id>/delete', methods=('POST',))
-@profile.auth.login_required
+@profile.admin.login_required
 def delete(post_id):
     """Delete a post."""
     get_post(post_id)
