@@ -6,7 +6,7 @@ import werkzeug.security
 import profile.db
 
 
-bp = flask.Blueprint('auth', __name__, url_prefix='/auth')
+bp = flask.Blueprint('admin', __name__, url_prefix='/admin')
 
 
 @bp.route('/register', methods=('GET', 'POST'))
@@ -36,11 +36,11 @@ def register():
             query = 'INSERT INTO user (username, password) VALUES (?, ?)'
             db.execute(query, (username, werkzeug.security.generate_password_hash(password)))
             db.commit()
-            return flask.redirect(flask.url_for('auth.login'))  # 'auth.login' is (blueprint name).(view function name)
+            return flask.redirect(flask.url_for('admin.login'))  # 'admin.login' is (blueprint name).(view function name)
 
         flask.flash(error)
 
-    return flask.render_template('auth/register.html')  # Path to template
+    return flask.render_template('admin/register.html')  # Path to template
 
 
 @bp.route('/login', methods=('GET', 'POST'))
@@ -71,7 +71,7 @@ def login():
 
         flask.flash(error)
 
-    return flask.render_template('auth/login.html')
+    return flask.render_template('admin/login.html')
 
 
 @bp.before_app_request
@@ -99,7 +99,7 @@ def login_required(view):
     def wrapped_view(**kwargs):
         if flask.g.user is None:
             # If the user is none, redirect
-            return flask.redirect(flask.url_for('auth.login'))
+            return flask.redirect(flask.url_for('admin.login'))
 
         return view(**kwargs)
 
