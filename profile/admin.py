@@ -67,7 +67,7 @@ def login():
             # one for the current user, and redirect to the home page
             flask.session.clear()
             flask.session['user_id'] = user['id']
-            return flask.redirect(flask.url_for('home'))
+            return flask.redirect(flask.url_for('admin.dashboard'))
 
         flask.flash(error)
 
@@ -104,3 +104,11 @@ def login_required(view):
         return view(**kwargs)
 
     return wrapped_view
+
+
+@bp.route('/')
+@login_required
+def dashboard():
+    """Main dashboard view for management."""
+
+    return flask.render_template('admin/dashboard.html')
