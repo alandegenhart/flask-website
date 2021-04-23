@@ -53,8 +53,8 @@ def create_app(test_config=None):
     import profile.db
     profile.db.init_app(app)
 
-    import profile.auth
-    app.register_blueprint(profile.auth.bp)
+    import profile.admin
+    app.register_blueprint(profile.admin.bp)
 
     import profile.blog
     app.register_blueprint(profile.blog.bp)
