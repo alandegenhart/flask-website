@@ -110,5 +110,44 @@ def login_required(view):
 @login_required
 def dashboard():
     """Main dashboard view for management."""
-
+    # TODO -- get overview data here
     return flask.render_template('admin/dashboard.html')
+
+
+@bp.route('/users')
+@login_required
+def users():
+    """Display list of users"""
+    query = 'SELECT id, username FROM user ORDER BY id'
+    rows = profile.db.get_db().execute(query).fetchall()
+    table_data = {
+        'table_name': 'Users',
+        'rows': rows
+    }
+    return flask.render_template('admin/display_table.html', table_data=table_data)
+
+
+@bp.route('/posts')
+@login_required
+def posts():
+    """Display list of posts"""
+    query = 'SELECT id, author_id, created, title FROM post ORDER BY id'
+    rows = profile.db.get_db().execute(query).fetchall()
+    table_data = {
+        'table_name': 'Posts',
+        'rows': rows
+    }
+    return flask.render_template('admin/display_table.html', table_data=table_data)
+
+
+@bp.route('/publications')
+@login_required
+def publications():
+    """Display list of publications"""
+    query = 'SELECT id, username FROM user ORDER BY id'
+    rows = profile.db.get_db().execute(query).fetchall()
+    table_data = {
+        'table_name': 'Publications',
+        'rows': rows
+    }
+    return flask.render_template('admin/display_table.html', table_data=table_data)
