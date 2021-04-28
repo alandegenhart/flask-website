@@ -1,8 +1,8 @@
 {% extends 'admin/dashboard.html' %}
-{% block title %}{{ table_data['table_name'] }}{% endblock %}
+{% block title %}{{ table_data['table_title'] }}{% endblock %}
 {% block button %}
     <div class="btn-toolbar mb-2 mb-md-0">
-        <a href="{{ url_for('admin.create') }}">
+        <a href="{{ url_for('admin.create_' + table_data['table_name']) }}">
             <button type="button" class="btn btn-sm btn-outline-secondary">
                 <span data-feather="calendar"></span>
                 New

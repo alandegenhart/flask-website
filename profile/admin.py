@@ -121,7 +121,8 @@ def users():
     query = 'SELECT id, username FROM user ORDER BY id'
     rows = profile.db.get_db().execute(query).fetchall()
     table_data = {
-        'table_name': 'Users',
+        'table_title': 'Users',
+        'table_name': 'user',
         'rows': rows
     }
     return flask.render_template('admin/display_table.html', table_data=table_data)
@@ -134,7 +135,8 @@ def posts():
     query = 'SELECT id, author_id, created, title FROM post ORDER BY id'
     rows = profile.db.get_db().execute(query).fetchall()
     table_data = {
-        'table_name': 'Posts',
+        'table_title': 'Posts',
+        'table_name': 'post',
         'rows': rows
     }
     return flask.render_template('admin/display_table.html', table_data=table_data)
@@ -147,18 +149,24 @@ def publications():
     query = 'SELECT id, username FROM user ORDER BY id'
     rows = profile.db.get_db().execute(query).fetchall()
     table_data = {
-        'table_name': 'Publications',
+        'table_title': 'Publications',
+        'table_name': 'publication',
         'rows': rows
     }
     return flask.render_template('admin/display_table.html', table_data=table_data)
 
 
-@bp.route('/create', methods=('GET', 'POST'))
+@bp.route('/create-user', methods=('GET', 'POST'))
 @login_required
-def create():
-    # TODO: query DB here for the fields to populate the form
-
-    """View to create a post."""
+def create_user():
+    """View to create a new user."""
+    # TODO: define form fields here -- even though it doesn't make sense to
+    #   define the form fields dynamically based on the table, we can still
+    #   generate a list of fields to pass to the same html template.
+    form_info = {
+        'title': 'User',
+        'fields': []
+    }
     if flask.request.method == 'POST':
         title = flask.request.form['title']
         body = flask.request.form['body']
@@ -178,7 +186,73 @@ def create():
             db.commit()
             return flask.redirect(flask.url_for('dashboard'))
 
-    return flask.render_template('admin/create.html')
+    return flask.render_template('admin/create.html', form_info=form_info)
+
+
+@bp.route('/create-post', methods=('GET', 'POST'))
+@login_required
+def create_post():
+    """View to create a new post."""
+    # TODO: define form fields here -- even though it doesn't make sense to
+    #   define the form fields dynamically based on the table, we can still
+    #   generate a list of fields to pass to the same html template.
+    form_info = {
+        'title': 'Post',
+        'fields': []
+    }
+    if flask.request.method == 'POST':
+        title = flask.request.form['title']
+        body = flask.request.form['body']
+        error = None
+
+        if not title:
+            error = 'Title is required.'
+
+        if error is not None:
+            # Display error
+            flask.flash(error)
+        else:
+            # Post is valid -- add to database
+            db = profile.db.get_db()
+            query = 'Insert INTO post (title, body, author_id) VALUES (?, ?, ?)'
+            db.execute(query, (title, body, flask.g.user['id']))
+            db.commit()
+            return flask.redirect(flask.url_for('dashboard'))
+
+    return flask.render_template('admin/create.html', form_info=form_info)
+
+
+@bp.route('/create-publication', methods=('GET', 'POST'))
+@login_required
+def create_publication():
+    """View to create a new publication."""
+    # TODO: define form fields here -- even though it doesn't make sense to
+    #   define the form fields dynamically based on the table, we can still
+    #   generate a list of fields to pass to the same html template.
+    form_info = {
+        'title': 'Publication',
+        'fields': []
+    }
+    if flask.request.method == 'POST':
+        title = flask.request.form['title']
+        body = flask.request.form['body']
+        error = None
+
+        if not title:
+            error = 'Title is required.'
+
+        if error is not None:
+            # Display error
+            flask.flash(error)
+        else:
+            # Post is valid -- add to database
+            db = profile.db.get_db()
+            query = 'Insert INTO post (title, body, author_id) VALUES (?, ?, ?)'
+            db.execute(query, (title, body, flask.g.user['id']))
+            db.commit()
+            return flask.redirect(flask.url_for('dashboard'))
+
+    return flask.render_template('admin/create.html', form_info=form_info)
 
 
 def get_post(post_id, check_author=True):

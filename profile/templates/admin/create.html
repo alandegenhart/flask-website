@@ -1,7 +1,7 @@
 {% extends 'admin/dashboard.html' %}
 
 {% block header %}
-    <h1>{% block title %}New{% endblock %}</h1>
+    <h1>{% block title %}New {{ form_info['title'] }}{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
