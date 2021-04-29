@@ -6,14 +6,17 @@
 
 {% block content %}
     <form method="post">
-        <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
-            <input name="title" id="title" class="form-control" value="{{ request.form['title'] }}" required>
-        </div>
-        <div class="mb-3">
-            <label for="body" class="form-label">Body</label>
-            <textarea name="body" id="body" class="form-control">{{ request.form['body'] }}</textarea>
-        </div>
+        {% for field in form_info['fields'] %}
+            <div class="mb-3">
+                <label for="{{ field['field_name'] }}" class="form-label">{{ field['display_name'] }}</label>
+                {% if field['type'] == 'input' %}
+                    <input name="{{ field['field_name'] }}" id="{{ field['field_name'] }}" class="form-control" value="{{ request.form[field['field_name']] }}">
+                {% endif %}
+                {% if field['type'] == 'textarea' %}
+                    <textarea name="{{ field['field_name'] }}" id="{{ field['field_name'] }}" class="form-control">{{ request.form[field['field_name']] }}</textarea>
+                {% endif %}
+            </div>
+        {% endfor %}
         <button type="submit" class="btn btn-primary">Save</button>
     </form>
 {% endblock %}
