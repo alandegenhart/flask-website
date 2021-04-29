@@ -59,9 +59,20 @@
         </nav>
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="pt-3">
+                  {% with messages = get_flashed_messages(with_categories=True) %}
+                      {% if messages %}
+                          {% for category, message in messages %}
+                              <div class="alert alert-{{ category }}">
+                                  {{ message }}
+                              </div>
+                          {% endfor %}
+                      {% endif %}
+                  {% endwith %}
+              </div>
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">{% block title %}Overview{% endblock %}</h1>
-            {% block button %}{% endblock %}
+              <h1 class="h2">{% block title %}Overview{% endblock %}</h1>
+              {% block button %}{% endblock %}
           </div>
 
           {% block content %}
