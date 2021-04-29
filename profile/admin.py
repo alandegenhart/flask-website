@@ -146,7 +146,7 @@ def posts():
 @login_required
 def publications():
     """Display list of publications"""
-    query = 'SELECT id, username FROM user ORDER BY id'
+    query = 'SELECT id, type, year, title, journal FROM publication ORDER BY id'
     rows = profile.db.get_db().execute(query).fetchall()
     table_data = {
         'table_title': 'Publications',
@@ -193,13 +193,23 @@ def create_user():
 @login_required
 def create_post():
     """View to create a new post."""
-    # TODO: define form fields here -- even though it doesn't make sense to
-    #   define the form fields dynamically based on the table, we can still
-    #   generate a list of fields to pass to the same html template.
+    # Create form info
     form_info = {
         'title': 'Post',
-        'fields': []
+        'fields': [
+            {
+                'field_name': 'title',
+                'display_name': 'Post Title',
+                'type': 'input',
+            },
+            {
+                'field_name': 'body',
+                'display_name': 'Post Body',
+                'type': 'textarea',
+            }
+        ]
     }
+
     if flask.request.method == 'POST':
         title = flask.request.form['title']
         body = flask.request.form['body']
@@ -207,17 +217,19 @@ def create_post():
 
         if not title:
             error = 'Title is required.'
+            alert = 'danger'
 
         if error is not None:
             # Display error
-            flask.flash(error)
+            flask.flash(error, alert)
         else:
             # Post is valid -- add to database
             db = profile.db.get_db()
             query = 'Insert INTO post (title, body, author_id) VALUES (?, ?, ?)'
             db.execute(query, (title, body, flask.g.user['id']))
             db.commit()
-            return flask.redirect(flask.url_for('dashboard'))
+            flask.flash('Post successfully added to database.', 'success')
+            return flask.redirect(flask.url_for('admin.posts'))
 
     return flask.render_template('admin/create.html', form_info=form_info)
 
