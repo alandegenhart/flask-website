@@ -15,3 +15,13 @@ CREATE TABLE post (
 	body TEXT NOT NULL,
 	FOREIGN KEY (author_id) REFERENCES user (id)
 );
+
+CREATE TABLE publication (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	type TEXT NOT NULL,
+	author_block TEXT NOT NULL,
+	title TEXT NOT NULL,
+	journal TEXT NOT NULL,
+	year TEXT NOT NULL,
+	doi TEXT
+);
